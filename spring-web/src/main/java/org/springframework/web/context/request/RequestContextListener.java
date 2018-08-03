@@ -59,6 +59,7 @@ public class RequestContextListener implements ServletRequestListener {
 		ServletRequestAttributes attributes = new ServletRequestAttributes(request);
 		request.setAttribute(REQUEST_ATTRIBUTES_ATTRIBUTE, attributes);
 		LocaleContextHolder.setLocale(request.getLocale());
+		// 设置属性到 threadlocal 变量
 		RequestContextHolder.setRequestAttributes(attributes);
 	}
 
@@ -72,6 +73,7 @@ public class RequestContextListener implements ServletRequestListener {
 		RequestAttributes threadAttributes = RequestContextHolder.getRequestAttributes();
 		if (threadAttributes != null) {
 			// We're assumably within the original request thread...
+			// 请求结束，清除当前线程的线程变量
 			LocaleContextHolder.resetLocaleContext();
 			RequestContextHolder.resetRequestAttributes();
 			if (attributes == null && threadAttributes instanceof ServletRequestAttributes) {

@@ -64,11 +64,15 @@ public abstract class RequestContextHolder  {
 
 	/**
 	 * Bind the given RequestAttributes to the current thread,
-	 * <i>not</i> exposing it as inheritable for child threads.
+	 * <i>not</i> exposing it as inheritable for child threads. <br>
+	 * 
+	 * 将给定的 RequestAttributes 属性绑定到当前线程，而不作为可继承的暴露给子线程
+	 * 
 	 * @param attributes the RequestAttributes to expose
 	 * @see #setRequestAttributes(RequestAttributes, boolean)
 	 */
 	public static void setRequestAttributes(@Nullable RequestAttributes attributes) {
+		// RequestAttributes 属性不设置到子线程中去
 		setRequestAttributes(attributes, false);
 	}
 
@@ -77,7 +81,7 @@ public abstract class RequestContextHolder  {
 	 * @param attributes the RequestAttributes to expose,
 	 * or {@code null} to reset the thread-bound context
 	 * @param inheritable whether to expose the RequestAttributes as inheritable
-	 * for child threads (using an {@link InheritableThreadLocal})
+	 * for child threads (using an {@link InheritableThreadLocal}) 是否将 RequestAttributes 暴露给子线程
 	 */
 	public static void setRequestAttributes(@Nullable RequestAttributes attributes, boolean inheritable) {
 		if (attributes == null) {
@@ -87,8 +91,7 @@ public abstract class RequestContextHolder  {
 			if (inheritable) {
 				inheritableRequestAttributesHolder.set(attributes);
 				requestAttributesHolder.remove();
-			}
-			else {
+			} else {
 				requestAttributesHolder.set(attributes);
 				inheritableRequestAttributesHolder.remove();
 			}
